@@ -1,189 +1,276 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(Lab1());
+void main() => runApp(MyApp());
 
 /// this is your APP Main screen configuration
-class Lab1 extends StatelessWidget {
-  Lab1({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LAb1HomePage(),
+      home: MyHomePage(),
     );
   }
 }
 
 /// this is a template to start building a UI
 /// to start adding any UI you want change what comes after the [ body: ] tag below
-class LAb1HomePage extends StatelessWidget {
-  LAb1HomePage({Key? key}) : super(key: key);
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff4f4f4),
-      /*******************--[focus here 🧐]--*******************/
       appBar: AppBar(
-        leading: const Icon(Icons.stars),
-        title: const Text('Lab 1'),
+        leading: const Icon(Icons.android_sharp),
+        title: const Text('App Title'),
         backgroundColor: Colors.teal,
         elevation: 4,
       ),
+      /*******************--[focus here 🧐]--*******************/
       body: myWidget(),
       /*******************--[focus here 🧐]--*******************/
     );
   }
 
   Widget myWidget() {
-    return SingleChildScrollView(
-      child: Column(
+    return Container(
+      margin: EdgeInsets.all(8),
+      color: Colors.black12,
+      child: Wrap(
+        spacing: 30,
         children: [
-          /*******************--[focus here 🧐]--*******************/
-          SizedBox(
-            height: 25,
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+            height: 40,
           ),
-          exercise1(),
-          SizedBox(
-            height: 25,
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+            height: 40,
           ),
-          exercise2(),
-          SizedBox(
-            height: 25,
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+            height: 40,
           ),
-          exercise3(),
-          SizedBox(
-            height: 25,
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+            height: 40,
           ),
-          exercise4(),
-          SizedBox(
-            height: 25,
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+            height: 40,
+            fit: BoxFit.cover,
           ),
-          exercise5(),
-          SizedBox(
-            height: 25,
-          ),
-          exercise6(),
-          /*******************--[focus here 🧐]--*******************/
         ],
       ),
     );
   }
 
-  Widget exercise1() {
-    return Text(
-      "Welcome to lab1",
-      style: TextStyle(
-        fontSize: 20,
-        color: Colors.lightGreenAccent,
-        fontFamily: 'monospace',
-        fontStyle: FontStyle.italic,
-        fontWeight: FontWeight.w200,
-        letterSpacing: 3,
-        backgroundColor: Colors.grey,
-      ),
-    );
-  }
-
-  Widget exercise2() {
-    return Icon(
-      Icons.share,
-      color: Colors.blue,
-      size: 200,
-      textDirection: TextDirection.ltr,
-    );
-  }
-
-  /// TODO : print on the screen on Pressed when clicking on the button, and print on Long Pressed when long click to Button
-  Widget exercise3() {
-    return ElevatedButton(
-      child: Text(
-        "Click here",
-        style: TextStyle(color: Colors.yellowAccent),
-      ),
-      style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 50),
-          elevation: 6,
-          shape: StadiumBorder()),
-      onPressed: () {
-        print("on Pressed");
-      },
-      onLongPress: () {
-        print("Long pressed");
-      },
-    );
-  }
-
-  Widget exercise4() {
-    return ElevatedButton(
-      child: Icon(
-        Icons.favorite,
-        color: Colors.greenAccent,
-        size: 20,
-        textDirection: TextDirection.ltr,
-      ),
-      style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.all(15),
-          elevation: 6,
-          backgroundColor: Colors.black,
-          shape: CircleBorder()),
-      onPressed: () {
-        print("on Pressed");
-      },
-      onLongPress: () {
-        print("Long pressed");
-      },
-    );
-  }
-
-  Widget exercise5() {
-    return OutlinedButton(
-      child: Text(
-        "Button to press",
-        style: TextStyle(color: Colors.green),
-      ),
-      style: OutlinedButton.styleFrom(
-        side: BorderSide(width: 1.0, color: Colors.green),
-      ),
-      onPressed: () {
-        print("on Pressed");
-      },
-      onLongPress: () {
-        print("Long pressed");
-      },
-    );
-  }
-
-  Widget exercise6() {
+  Container container5() {
     return Container(
-      padding: const EdgeInsets.all(25.0),
-      decoration: BoxDecoration(
-        color: Colors.yellow,
-        border: Border(
-          left: BorderSide(
-            color: Colors.pink,
-            width: 10.0,
+      margin: EdgeInsets.all(8),
+      color: Colors.black12,
+      child: Column(
+        children: [
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+            height: 50,
           ),
-          right: BorderSide(
-            color: Colors.blue,
-            width: 10.0,
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+            height: 40,
           ),
-          top: BorderSide(
-            color: Colors.lightBlue,
-            width: 10.0,
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+            height: 40,
           ),
-          bottom: BorderSide(
-            color: Colors.green,
-            width: 10.0,
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+            height: 40,
+          ),
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+            height: 40,
+            fit: BoxFit.cover,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container container4() {
+    return Container(
+        padding: EdgeInsets.all(20),
+        height: 300,
+        width: 500,
+        child: Stack(
+          children: [
+            Image.network(
+                "https://upload.wikimedia.org/wikipedia/commons/e/ea/Spring_Lake%2C_New_Jersey_Beach_at_Sunrise.jpg",
+                height: 300,
+                fit: BoxFit.cover),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                "Sunrise",
+                style: TextStyle(
+                    fontSize: 50,
+                    backgroundColor: Colors.black45,
+                    color: Colors.white,
+                    fontFamily: "cursive"),
+              ),
+            )
+          ],
+        ));
+  }
+
+  Container container3() {
+    return Container(
+        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.all(20),
+        height: 500,
+        color: Colors.black12,
+        child:
+            /*******************--[focus here 🧐]--*******************/
+            Stack(
+          children: [
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                height: 300,
+                width: 300,
+                color: Colors.greenAccent,
+                child: Text(
+                  "Hello",
+                  style: TextStyle(
+                    fontSize: 50,
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: 100,
+                width: 100,
+                color: Colors.yellow,
+                child: Text(
+                  "Hello",
+                  style: TextStyle(fontSize: 50),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                height: 50,
+                width: 50,
+                color: Colors.blueAccent,
+                child: Text(
+                  "Hello",
+                  style: TextStyle(fontSize: 50),
+                ),
+              ),
+            ),
+          ],
+        )
+        /*******************--[focus here 🧐]--*******************/
+        );
+  }
+
+  Container container2() {
+    return Container(
+      padding: EdgeInsets.only(bottom: 16),
+      child: Scrollbar(
+        thickness: 6,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.add,
+                size: 100,
+              ),
+              Icon(
+                Icons.add,
+                size: 100,
+              ),
+              Icon(
+                Icons.add,
+                size: 100,
+              ),
+              Icon(
+                Icons.add,
+                size: 100,
+              ),
+              Icon(
+                Icons.add,
+                size: 100,
+              ),
+              Icon(
+                Icons.add,
+                size: 100,
+              ),
+              Icon(
+                Icons.add,
+                size: 100,
+              ),
+              Icon(
+                Icons.add,
+                size: 100,
+              ),
+              Icon(
+                Icons.add,
+                size: 100,
+              ),
+            ],
           ),
         ),
       ),
-      child: Icon(
-        Icons.warning,
-        color: Colors.black,
-        size: 30,
-        textDirection: TextDirection.ltr,
-      ),
+    );
+  }
+
+  Container container() {
+    return Container(
+      padding: EdgeInsets.only(bottom: 10),
+      child: Column(
+          textDirection: TextDirection.ltr,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: Text("1"),
+                color: Colors.red,
+                width: 300,
+              ),
+            ),
+            Expanded(
+              child: Container(
+                child: Text("2"),
+                color: Colors.yellow,
+                width: 300,
+              ),
+            ),
+            Expanded(
+              child: Container(
+                child: Text("3"),
+                color: Colors.greenAccent,
+                width: 300,
+              ),
+            ),
+            Expanded(
+              child: Container(
+                child: Text("4"),
+                color: Colors.blueGrey,
+                width: 300,
+              ),
+            ),
+          ]),
     );
   }
 }
