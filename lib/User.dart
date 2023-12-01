@@ -1,0 +1,21 @@
+class User {
+  // "id":5775257,
+  // "name":"Ajit Devar VM",
+  // "email":"ajit_devar_vm@mitchell.example",
+  // "gender":"female",
+  // "status":"inactive"
+
+  late int id;
+  late String name;
+  late String email;
+  late String gender;
+  late String status;
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    name = json["name"];
+    email = json["email"];
+    gender = json["gender"];
+    status = json["status"];
+  }
+}

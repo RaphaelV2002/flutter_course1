@@ -1,254 +1,120 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_course1/AddPostScreenTemplate.dart';
+import 'package:http/http.dart' as http;
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        brightness: Brightness.light,
-        fontFamily: 'PassionOne',
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        fontFamily: 'PassionOne',
-      ),
-      themeMode: ThemeMode.dark,
+          colorScheme: ColorScheme.fromSwatch(
+              primarySwatch: Colors.teal, accentColor: Colors.blueGrey)),
       home: MyHomePage(),
     );
   }
 }
 
-/// this is a template to start building a UI
-/// to start adding any UI you want change what comes after the [ body: ] tag below
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  List<Post> posts = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          "Saratov",
-          style: TextStyle(
-            fontSize: 40,
-          ),
+        appBar: AppBar(
+          title: Text("Posts List"),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              print("+");
-            },
-            icon: Icon(
-              Icons.add,
-              size: 40,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context, AddPostScreenTemplate.getRoute(context));
+
+          },
+          child: Icon(Icons.add_comment_sharp),
+        ),
+        body: posts.isEmpty ? buildEmptyView() : buildUserList());
+  }
+
+  Widget buildEmptyView() {
+    return Center(
+      child: ElevatedButton(
+          onPressed: () {
+            getPosts();
+          },
+          child: Text('press me')),
+    );
+  }
+
+  getPosts() async {
+    var response =
+    await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+    if (response.statusCode == 200) {
+      var list = jsonDecode(response.body) as List;
+      list.forEach((element) {
+        Post post = Post.fromJson(element);
+        posts.add(post);
+        print(post.userId);
+        print(post.id);
+        print(post.title);
+        print(post.body);
+      });
+      setState(() {});
+      //print(response.body);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error ${response.reasonPhrase}')),
+      );
+    }
+  }
+
+  buildUserList() {
+    return ListView.builder(
+      itemCount: posts.length,
+      itemBuilder: (context, index) {
+        return Column(
+          children: [
+            ListTile(
+              title: Text(
+                posts[index].title,
+                style: TextStyle(fontSize: 14),
+              ),
+              subtitle: Text(
+                posts[index].body,
+              ),
+              leading: Icon(Icons.message),
             ),
-          )
-        ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/sky.jpeg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: flowerDetails(context),
-      ),
+            Divider()],
+        );
+      },
     );
   }
 }
 
-Widget flowerDetails(BuildContext context) {
-  return ListView(
-    primary: false,
-    padding: const EdgeInsets.all(10),
-    children: <Widget>[
-      Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Now(),
-            Forecast(),
-          ],
-        ),
-      ),
-    ],
-  );
-}
+class Post {
+  late int userId;
+  late int id;
+  late String title;
+  late String body;
 
-Widget Now() {
-  return Container(
-    padding: EdgeInsets.only(top: 200, right: 40, left: 40),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(10),
-      color: Colors.transparent,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Container(
-          height: 100,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Center(
-            child: Text(
-              "-2\u2103",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 75,
-              ),
-            ),
-          ),
-        ),
-        Center(
-          child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Text(
-              "Cloudy 0\u2103 / -7\u2103",
-              style: TextStyle(color: Colors.white, fontSize: 25),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget Forecast() {
-  return Container(
-    padding: EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(30),
-      color: Colors.black12,
-    ),
-    child: Align(
-      alignment: Alignment.topCenter,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.calendar_month,
-                    color: Colors.white54,
-                  ),
-                  Text(
-                    '5 day forecast',
-                    style: TextStyle(color: Colors.white54, fontSize: 25),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'More details',
-                    style: TextStyle(color: Colors.white54, fontSize: 15),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.white54,
-                    size: 15,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.cloud,
-                  ),
-                  Text(
-                    ' Today Mainly cloudy',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-              Text(
-                '0\u2103 / -7\u2103',
-                style: TextStyle(fontSize: 20),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.sunny,
-                    color: Colors.yellow,
-                  ),
-                  Text(
-                    ' Tomorrow Sunny',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-              Text(
-                '3\u2103 / -1\u2103',
-                style: TextStyle(fontSize: 20),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.cloudy_snowing,
-                  ),
-                  Text(
-                    ' Monday Snowing',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-              Text(
-                '0\u2103 / -1\u2103',
-                style: TextStyle(fontSize: 20),
-              ),
-            ],
-          ),
-          ElevatedButton(
-            onPressed: () {
-              print("b");
-            },
-            child: Text(
-              "5 day forecast",
-              style: TextStyle(color: Colors.white, fontSize: 19),
-            ),
-            style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.only(
-                  top: 10,
-                  bottom: 10,
-                  right: 50,
-                  left: 50,
-                ),
-                elevation: 6,
-                shape: StadiumBorder(),
-                backgroundColor: Colors.white38),
-          ),
-        ],
-      ),
-    ),
-  );
+  Post.fromJson(Map<String, dynamic> json) {
+    userId = json["userId"];
+    id = json["id"];
+    title = json["title"];
+    body = json["body"];
+  }
 }
