@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_course1/AddPostScreenTemplate.dart';
 import 'package:http/http.dart' as http;
+import 'Post.dart';
 
 void main() => runApp(MyApp());
 
@@ -43,11 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(context, AddPostScreenTemplate.getRoute(context));
-
           },
           child: Icon(Icons.add_comment_sharp),
         ),
-        body: posts.isEmpty ? buildEmptyView() : buildUserList());
+        body: buildPostList());
   }
 
   Widget buildEmptyView() {
@@ -60,29 +60,39 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  getPosts() async {
+  Future<List<Post>> getPosts() async {
     var response =
-    await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+        await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
     if (response.statusCode == 200) {
       var list = jsonDecode(response.body) as List;
       list.forEach((element) {
         Post post = Post.fromJson(element);
         posts.add(post);
-        print(post.userId);
-        print(post.id);
-        print(post.title);
-        print(post.body);
       });
-      setState(() {});
+      // setState(() {});
+      return posts;
       //print(response.body);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error ${response.reasonPhrase}')),
-      );
+      throw Exception('Failed to load posts: ${response.reasonPhrase}');
     }
   }
 
-  buildUserList() {
+  buildPostList() {
+    Future<List<Post>> futurePosts = getPosts();
+    return FutureBuilder(
+      future: futurePosts,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          List<Post> posts = snapshot.data!;
+          return buildListView(posts);
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+
+  ListView buildListView(List<Post> posts) {
     return ListView.builder(
       itemCount: posts.length,
       itemBuilder: (context, index) {
@@ -98,23 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               leading: Icon(Icons.message),
             ),
-            Divider()],
+            Divider()
+          ],
         );
       },
     );
-  }
-}
-
-class Post {
-  late int userId;
-  late int id;
-  late String title;
-  late String body;
-
-  Post.fromJson(Map<String, dynamic> json) {
-    userId = json["userId"];
-    id = json["id"];
-    title = json["title"];
-    body = json["body"];
   }
 }

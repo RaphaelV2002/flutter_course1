@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-//
+import 'Post.dart';
 
 class AddPostScreenTemplate extends StatefulWidget {
   /// make the screen introduce it self
@@ -18,64 +18,74 @@ class AddPostScreenTemplate extends StatefulWidget {
 }
 
 class _AddPostScreenTemplateState extends State<AddPostScreenTemplate> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add new user'),
+        title: Text('Add new comment'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-            children: [
-            TextField(controller: TextEditingController(),
-        decoration: const InputDecoration(
-          icon: Icon(Icons.title),
-          filled: true,
-          hintText: 'write title here...',
-          labelText: 'title ',
+          children: [
+            TextField(
+              controller: titleController,
+              decoration: const InputDecoration(
+                icon: Icon(Icons.title),
+                filled: true,
+                hintText: 'write title here...',
+                labelText: 'title ',
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            TextField(
+              controller: textController,
+              decoration: const InputDecoration(
+                icon: Icon(Icons.message),
+                filled: true,
+                hintText: 'write text here...',
+                labelText: 'comment ',
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                /// Exercise 5 call addComment with Named parameter
+                addComment(
+                  title: titleController.text,
+                  text: textController.text,
+                );
+              },
+              child: Text("Add Comment".toUpperCase()),
+            )
+          ],
         ),
-        ),
-        SizedBox(
-          height: 16,
-        ),
-        TextField(controller: TextEditingController(),
-          decoration: const InputDecoration(
-            icon: Icon(Icons.message),
-            filled: true,
-            hintText: 'write text here...',
-            labelText: 'comment ',
-          ),
-        ),
-        SizedBox(
-          height: 16,
-        ),
-        ElevatedButton(
-          onPressed: () {
-            /// Exercise 5 call addComment with Named parameter
-          },
-          child: Text("Add Comment".toUpperCase()),
-        )
-        ],
       ),
-    ),);
+    );
   }
 
-  void addComment({required String title,
-    required String text}) async {
+  void addComment({required String title, required String text}) async {
     var response = await http.post(
         Uri.parse(
-          "https://gorest.co.in/public/v2/users",
+          "https://jsonplaceholder.typicode.com/posts",
         ),
         headers: {
           "Authorization":
-          "Bearer ed0645c09baf75ccb7b21afc0af41ab01f0770fd90e831d5295fab6c77d96965",
+              "Bearer ed0645c09baf75ccb7b21afc0af41ab01f0770fd90e831d5295fab6c77d96965",
           "Content-Type": "application/json",
         },
         body: jsonEncode({
           "title": "$title",
           "text": "$text",
         }));
+
 
     print(response.body);
     if (response.statusCode == 201) {
